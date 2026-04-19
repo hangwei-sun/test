@@ -15,9 +15,15 @@ npm run dev
 npm run build
 ```
 
+GitHub Pages 发布构建：
+
+```bash
+npm run build:pages
+```
+
 ## 在线发布
 
-仓库已配置 GitHub Pages 自动部署工作流。推送到 `main` 分支后，GitHub Actions 会自动构建并发布站点。
+仓库已配置 GitHub Pages 自动部署工作流。推送到 `main` 分支后，GitHub Actions 会自动执行 `npm run build:pages` 并发布站点。
 
 预期访问地址：
 
