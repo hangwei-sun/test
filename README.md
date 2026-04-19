@@ -24,5 +24,3 @@ npm run build
 ```text
 https://hangwei-sun.github.io/test/
 ```
-
-如果首次部署后网页暂时未生效，通常等待 1-3 分钟即可。
