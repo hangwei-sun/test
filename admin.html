@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>灵创健康 | 管理后台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --brand: #1c5e43;
+        --surface: #ffffff;
+        --surface-strong: #f4f7f5;
+        --text: #1a201d;
+        --muted: #5e7065;
+        --line: #e2e9e4;
+      }
+      body {
+        font-family: "Noto Sans SC", sans-serif;
+        background: #f0f4f1;
+        color: var(--text);
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      .card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        margin-bottom: 24px;
+      }
+      h1, h2 { color: var(--brand); }
+      input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 16px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        box-sizing: border-box;
+      }
+      button {
+        background: var(--brand);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover { opacity: 0.9; }
+      button.danger { background: #d32f2f; }
+      
+      .hidden { display: none !important; }
+      
+      /* Login Screen */
+      #login-screen {
+        max-width: 400px;
+        margin: 100px auto;
+      }
+      
+      /* Dashboard */
+      #dashboard { display: none; }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+      }
+      th { background: var(--surface-strong); }
+      
+      .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .tab {
+        padding: 10px 20px;
+        background: var(--line);
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .tab.active {
+        background: var(--brand);
+        color: white;
+      }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+    </style>
+  </head>
+  <body>
+    
+    <div id="login-screen" class="container">
+      <div class="card text-center">
+        <h2>系统管理登录</h2>
+        <p>默认密码为: admin123</p>
+        <form id="login-form">
+          <input type="password" id="password" placeholder="请输入管理员密码" required />
+          <button type="submit" style="width: 100%">登录</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="dashboard" class="container">
+      <div class="header">
+        <h1>灵创健康管理后台</h1>
+        <button id="logout-btn" class="danger">退出登录</button>
+      </div>
+      
+      <div class="tabs">
+        <div class="tab active" data-target="tab-messages">留言管理</div>
+        <div class="tab" data-target="tab-products">产品管理</div>
+        <div class="tab" data-target="tab-news">新闻资讯管理</div>
+      </div>
+      
+      <div class="card tab-content active" id="tab-messages">
+        <h2>最新留言</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>姓名</th>
+              <th>内容</th>
+              <th width="80">操作</th>
+            </tr>
+          </thead>
+          <tbody id="messages-tbody">
+            <!-- Messages will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="card tab-content" id="tab-products">
+        <h2>产品列表</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th>
+              <th>描述</th>
+              <th width="120">操作</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <!-- Products will be loaded here -->
+          </tbody>
+        </table>
+        
+        <h3 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">添加/编辑产品</h3>
+        <form id="product-form">
+          <input type="hidden" id="prod-id" />
+          <label>产品名称</label>
+          <input type="text" id="prod-name" required />
+          <label>图片 URL</label>
+          <input type="text" id="prod-image" placeholder="https://..." required />
+          <label>产品描述 (简短)</label>
+          <textarea id="prod-desc" rows="2" required></textarea>
+          <label>产品详情 (支持 Markdown 或 HTML)</label>
+          <textarea id="prod-content" rows="6" placeholder="请输入详细的产品介绍..."></textarea>
+          <button type="submit" id="prod-submit">保存产品</button>
+          <button type="button" id="prod-cancel" class="danger hidden">取消编辑</button>
+        </form>
+      </div>
+
+      <div class="card tab-content" id="tab-news">
+        <h2>新闻列表</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>标题</th>
+              <th>发布时间</th>
+              <th width="120">操作</th>
+            </tr>
+          </thead>
+          <tbody id="news-tbody">
+            <!-- News will be loaded here -->
+          </tbody>
+        </table>
+        
+        <h3 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">发布/编辑新闻</h3>
+        <form id="news-form">
+          <input type="hidden" id="news-id" />
+          <label>标题</label>
+          <input type="text" id="news-title" required />
+          <label>正文内容 (支持 Markdown 或 HTML)</label>
+          <textarea id="news-content" rows="6" placeholder="请输入新闻内容..."></textarea>
+          <button type="submit" id="news-submit">保存新闻</button>
+          <button type="button" id="news-cancel" class="danger hidden">取消编辑</button>
+        </form>
+      </div>
+      
+    </div>
+
+    <script type="module" src="/src/admin.js"></script>
+  </body>
+</html>
